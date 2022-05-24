@@ -6,3 +6,4 @@ git init
 git remote add origin https://github.com/ngyihkai/FYP.git
 git push origin master
 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
+git commit --amend --no-edit

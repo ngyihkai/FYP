@@ -1,0 +1,69 @@
+###18.1###
+/media/imeynyk/jitjti/fyp ubuntu/Downloads/pipecnn
+
+#   Download Altera Quartus II and OpenCL SDK   #
+https://www.intel.com/content/www/us/en/software-kit/666220/intel-quartus-ii-web-edition-design-software-version-13-1-for-linux.html
+  1. Download the software .tar file and the appropriate device support files.
+  2. Extract the files into the same temporary directory.
+  	tar -xvf Quartus-18.1.0.625-linux-complete.tar
+  3. Run the setup.bat file.669547?filename=Quartus-18.1.0.625-linux-complete.tar
+    ./setup.sh
+
+#    Install Altera SoC EDS   #
+cd media/imeynyk/partition2/altera/18.1
+chmod +x SoCEDSSetup-18.1.0.625-linux.run
+./SoCEDSSetup-18.1.0.625-linux.run
+##need to run /intelFPGA/18.1/embedded/host_tools/altera/ds5_link from the embedded command shell after installing DS-5 to create the baremental toolchain link##
+cd /intelFPGA/18.1/embedded
+sudo ./install.sh
+installed location: /usr/local/DS-5_v5.29.1
+/home/imeynyk/intelFPGA/18.1/embedded/ds-5
+
+#   Install Altera AOCL       #
+chmod +x AOCLSetup-18.1.0.625.run
+./AOCLSetup-18.1.0.625.run
+
+#   DE1-SOC_OPENCL            #
+unzip and copy 'de1soc' folder to the created 'terasic' folder in the 
+intelFPGA/18.1/hld/board/terasic
+
+#   configuration of environment variables  #
+  sudo gedit /etc/profile
+  export QUARTUS_ROOTDIR=/home/imeynyk/intelFPGA/18.1/quartus
+  export ALTERAOCLSDKROOT=/home/imeynyk/intelFPGA/18.1/hld
+  export PATH=$PATH:$QUARTUS_ROOTDIR/bin:"$ALTERAOCLSDKROOT"/linux64/bin:"$ALTERAOCLSDKROOT"/bin:/home/imeynyk/intelFPGA/18.1/embedded/ds-5_installer
+  export LD_LIBRARY_PATH=$ALTERAOCLSDKROOT/linux64/lib
+  export AOCL_BOARD_PACKAGE_ROOT=$ALTERAOCLSDKROOT/board/terasic/de1_soc
+  export QUARTUS_64BIT=1
+  export LM_LICENSE_FILE=/home/imeynyk/intelFPGA/18.1/hld/license.dat 
+  source /etc/profile
+
+#   verify utility            #
+aocl version
+
+#   verify target board       #
+aoc --list-boards
+
+#   chk environment variables #
+echo $AOCL_BOARD_PACKAGE_ROOT
+
+#   compile opencl kernel     #
+cd /home/imeynyk/intelFPGA/18.1/hld/board/terasic/de1_soc/tests/boardtest
+aoc device/boardtest.cl --sw-dimm-partition -o bin/boardtest.aocx
+go to /intelFPGA/18.1/hld/board/terasic/de1_soc/tests/boardtest/bin
+check boardtest.aocx is created or not
+
+#   Compile Host Program      #
+cd intelFPGA/18.1/embedded
+./embedded_command_shell.sh
+cd intelFPGA/18.1/hld/board/terasic/de1_soc/tests/boardtest
+##error##
+arm-linux-gnueabihf-g++: error while loading shared libraries: libstdc++.so.6: cannot open shared object file: No such file or directory
+make: *** [Makefile:36: all] Error 127
+solution: sudo apt-get install lib32stdc++6
+##error##
+error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+solution: sudo apt-get install zlib1g:i386
+
+# Test boardtest project   #
+boot DE1-SoC with the Linux image for DE1-SoC OpenCL described in Chapter 1.4

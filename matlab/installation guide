@@ -1,0 +1,14 @@
+Installation guide:
+https://www.youtube.com/watch?v=4sj0tnufcOM
+
+open Crack folder
+copy "LICENSE, matlab_server, and bin" to Desktop
+cd Desktop
+sudo cp -r bin /usr/local/MATLAB/R2018a/
+sudo cp -r MATLAB_Production_Server /usr/local/MATLAB/R2018a/
+sudo cp -r license_standalone.lic /usr/local/MATLAB/R2018a/licenses/
+
+method to open matlab:
+sudo /usr/local/MATLAB/R2018a/bin/matlab
+/root/Downloads/MathWorks/SupportPackages/R2018a
+

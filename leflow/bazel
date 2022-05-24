@@ -1,0 +1,36 @@
+#bazel
+https://docs.bazel.build/versions/main/install-ubuntu.html
+https://github.com/bazelbuild/bazel/releases/tag/0.16.0
+https://github.com/bazelbuild/bazel/releases/download/0.15.0/bazel-0.15.0-installer-linux-x86_64.sh
+sudo apt install g++ unzip zip
+chmod +x bazel-0.16.0-installer-linux-x86_64.sh
+./bazel-0.16.0-installer-linux-x86_64.sh --user
+export PATH="$PATH:$HOME/bin"
+
+#0.27.1
+sudo apt install g++ unzip zip
+download 0.27.1 from github
+chmod +x bazel-0.27.1-installer-linux-x86_64.sh
+./bazel-0.27.1-installer-linux-x86_64.sh --user
+source ~/.bashrc
+gedit .bashrc
+export PATH="$PATH:$HOME/bin"
+
+#4.2.2
+sudo apt install g++ unzip zip
+download 4.2.2 from github
+chmod +x bazel-4.2.2-installer-linux-x86_64.sh
+./bazel-4.2.2-installer-linux-x86_64.sh --user
+source ~/.bashrc
+export PATH="$PATH:$HOME/bin"
+
+#5.1.0
+sudo apt install g++ unzip zip
+download 5.1.0 from github
+chmod +x bazel-5.1.0-installer-linux-x86_64.sh
+./bazel-5.1.0-installer-linux-x86_64.sh --user
+source ~/.bashrc
+export PATH="$PATH:$HOME/bin"
+
+#uninstall
+rm -fr ~/.bazel ~/.bazelrc

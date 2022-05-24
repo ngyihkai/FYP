@@ -1,0 +1,24 @@
+#tensorflow
+sudo apt update
+sudo apt install python3-dev python3-pip python3-venv
+python3 -m venv venv
+source ./venv/bin/activate
+pip install -U pip
+pip install -U setuptools
+pip install tensorflow-gpu==1.6 
+python
+import tensorflow as tf
+print(tf.__version__)
+
+python covid_19_detection.py
+
+
+# reinstall python
+sudo apt-get remove python3-pip
+wget https://bootstrap.pypa.io/pip/3.5/get-pip.py
+python3 get-pip.py
+python3 -m pip list
+
+curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py   
+python2 get-pip.py
+python2 -m pip list

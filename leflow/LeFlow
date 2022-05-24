@@ -1,0 +1,23 @@
+#LeFlow
+cd Downloads/LeFlow-master/src/tensorflow
+sudo pip install tensorflow-1.6.0-cp27-cp27mu-linux_x86_64.whl --ignore-installed six
+
+#compiliong from scratch
+LeFlow/src/tensorflow/tensorflow_src directory
+git clone https://github.com/tensorflow/tensorflow.git
+cd tensorflow
+git checkout 336ca16154dc062f2cbab56502395f14f4d01e49
+copy the files we modified to the cloned repository and compile Tensorflow normally using the instructions 
+
+##LeFlow settings (make it executable)
+python_path="/usr/bin/python"
+python_path="/home/imeynyk/venv/bin/python"
+
+#legup_examples_folder="/home/legup/legup-4.0/examples/"
+legup_examples_folder="/Downloads/LeFlow-master/examples/"
+cd Downloads/LeFlow-master/src
+chmod +x LeFlow  ##chmod +x somefile is the same as chmod a+x somefile
+
+##Testing your installation
+cd Downloads/LeFlow-master/test
+python test_all.py --fast

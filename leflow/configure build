@@ -1,0 +1,41 @@
+#configure build
+./configure
+
+#Build the pip package
+bazel build --config=cuda [--config=option] //tensorflow/tools/pip_package:build_pip_package
+bazel build --config=v1 [--config=option] //tensorflow/tools/pip_package:build_pip_package
+
+# cuda and v1
+bazel build --config=v1 --config=cuda //tensorflow/tools/pip_package:build_pip_package
+bazel build --config=cuda --config=v1 //tensorflow/tools/pip_package:build_pip_package
+
+#failed, cannot fine v1
+bazel build --config=cuda  //tensorflow/tools/pip_package:build_pip_package
+bazel build --config=v1 //tensorflow/tools/pip_package:build_pip_package
+
+#failed
+bazel build --config=opt -c opt //tensorflow/tools/pip_package:build_pip_package
+
+#runned but cannot
+bazel build --config=opt --config=cuda //tensorflow/tools/pip_package:build_pip_package
+#error
+Server terminated abruptly (error code: 1, error message: 'Received RST_STREAM err=8', log file: '/home/imeynyk/.cache/bazel/_bazel_imeynyk/f349a3cf914c6d3583c8a32f93e94421/server/jvm.out')
+
+
+ERROR: Config value v1 is not defined in any .rc file
+##https://stackoverflow.com/questions/45425199/bazel-build-error-with-tensorflow##
+##https://github.com/tensorflow/tensorflow/releases?expanded=true&page=3&q=TensorFlow+1.6##
+##https://github.com/tensorflow/tensorflow##
+git clone https://github.com/tensorflow/tensorflow.git
+cd tensorflow
+git checkout r1.6 
+git checkout r2.1
+./configure 
+bazel build -c opt --config=cuda //tensorflow/tools/pip_package:build_pip_package
+
+cd Downloads/LeFlow-master/src/tensorflow
+sudo pip install tensorflow-1.6.0-cp27-cp27mu-linux_x86_64.whl --ignore-installed six
+
+#any bazel also failed
+ERROR: Unrecognized option: --experimental_repo_remote_exec
+

@@ -1,0 +1,4 @@
+###	Using Linux Host PC with Root Privilege	###
+sudo apt-get install minicom
+Download DE1-SoC BSP from http://cd-de1-soc.terasic.com
+extract the linux image file linux_sd_card_image.img from linux_sd_card_image.bz2.
