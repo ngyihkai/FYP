@@ -1,0 +1,42 @@
+Warning: The following error was caught while executing 'caffe.Net' class
+destructor:
+Error using caffe_
+Could not convert handle to pointer due to invalid init_key. The object might
+have been cleared.
+
+Error in caffe.Net/delete (line 73)
+        caffe_('delete_net', self.hNet_self); 
+Warning: The following error was caught while executing 'caffe.Solver' class
+destructor:
+Error using caffe_
+Could not convert handle to pointer due to invalid init_key. The object might
+have been cleared.
+
+Error in caffe.Solver/delete (line 40)
+      caffe_('delete_solver', self.hSolver_self); 
+Warning: The following error was caught while executing 'caffe.Net' class
+destructor:
+Error using caffe_
+Could not convert handle to pointer due to invalid init_key. The object might
+have been cleared.
+
+Error in caffe.Net/delete (line 73)
+        caffe_('delete_net', self.hNet_self); 
+Warning: The following error was caught while executing 'caffe.Net' class
+destructor:
+Error using caffe_
+Could not convert handle to pointer due to invalid init_key. The object might
+have been cleared.
+
+Error in caffe.Net/delete (line 73)
+        caffe_('delete_net', self.hNet_self); 
+
+
+
+if self.isvalid
+        caffe_('delete_net', self.hNet_self);
+end
+
+if self.isvalid
+        caffe_('delete_solver', self.hSolver_self); 
+end

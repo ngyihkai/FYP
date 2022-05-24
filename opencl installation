@@ -1,0 +1,120 @@
+###opencl installation###
+sudo apt-get install minicom
+
+###Download DE1-SoC BSP ###
+http://cd-de1-soc.terasic.com and extract the linux image
+file linux_sd_card_image.img from linux_sd_card_image.bz2.
+tar -xvf DE1-SoC_OpenCL_BSP.tar.gz
+copy de1soc folder to the created terasic folder(self create)
+
+###Download Altera Quartus II and OpenCL SDK###
+https://cdrdv2.intel.com/v1/dl/downloadStart/669522/669543?filename=cyclonev-17.0.0.595.qdz
+https://cdrdv2.intel.com/v1/dl/downloadStart/669515/
+  1. Download the software .tar file and the appropriate device support files.
+  2. Extract the files into the same temporary directory.
+  	tar -xvf Quartus-17.0.0.595-linux-complete_4.tar
+  3. Run the setup.bat file.669547?filename=Quartus-17.0.0.595-linux-complete.tar
+    ./setup.sh
+
+sudo cp Altera.icd /etc/OpenCL/vendors
+
+###Install Altera SoC EDS###
+https://cdrdv2.intel.com/v1/dl/downloadStart/669550/669555?filename=SoCEDSSetup-17.0.0.595-linux.run
+chmod +x SoCEDSSetup-17.0.0.595-linux.run
+./SoCEDSSetup-17.0.0.595-linux.run
+need to run /intelFPGA/17.0/embedded/host_tools/altera/ds5_link from the embedded command shell after installing DS-5 to create the baremental toolchain link
+
+###configuration of environment variables###
+sudo gedit /etc/profile
+export QUARTUS_ROOTDIR=/root/altera/17.0/quartus
+export ALTERAOCLSDKROOT=/root/altera/17.0/hld
+export PATH=$PATH:”$QUARTUS_ROOTDIR”/bin; ”$ALTERAOCLSDKROOT”/linux64/bin; ”$ALTERAOCLSDKROOT”/bin; /root/altera/17.0/embedded/ds-5_installer
+export LD_LIBRARY_PATH=”$ALTERAOCLSDKROOT”/linux64/lib
+export AOCL_BOARD_PACKAGE_ROOT=”$ALTERAOCLSDKROOT”/board/terasic/de1_soc
+export QUARTUS_64BIT=1
+export LM_LICENSE_FILE=/root/altera/17.0/hld/license.dat 
+source /etc/profile
+
+###error###
+bash: export: `”/root/altera/17.0/hld”/linux64/bin': not a valid identifier
+bash: export: `:': not a valid identifier
+bash: ”/root/altera/17.0/hld”/bin:/root/altera/17.0/embedded/ds-5/bin: No such file or directory done
+bash: export: `board/terasic/de1soc': not a valid identifier done
+bash: export: `/root/altera/17.0/hld/license.dat': not a valid identifier
+
+bash: ”/root/altera/17.0/hld”/linux64/bin: No such file or directory
+bash: ”/root/altera/17.0/hld”/bin: No such file or directory
+bash: /root/altera/17.0/embedded/ds-5_installer: Permission denied
+bash: export: `/root/altera/17.0/hld/license.dat': not a valid identifier
+
+bash: /root/altera/17.0/hld/linux64/bin: Permission denied
+bash: /root/altera/17.0/hld/bin: Permission denied
+bash: /root/altera/17.0/embedded/ds-5_installer: Permission denied
+
+  ##solution1##
+  sudo ls -l /root/altera/17.0/hld/linux64/bin
+  sudo ls -l /root/altera/17.0/hld/bin
+  sudo ls -l /root/altera/17.0/embedded/ds-5_installer
+
+  ##solution2##
+  cd /root/altera/17.0/hld/linux64/
+  chmod ugo+rwx bin
+  ls bin
+  cd /root/altera/17.0/hld/
+  chmod ugo+rwx bin
+  ls bin
+  cd /root/altera/17.0/embedded
+  chmod ugo+rwx ds-5_installer
+  ls ds-5_installer
+
+  ##solution3##
+  cd intelFPGA/17.0/hld/linux64
+  chmod ugo+rwx bin
+  ls bin
+  cd intelFPGA/17.0/hld/
+  chmod ugo+rwx bin
+  ls bin
+  cd intelFPGA/17.0/embedded
+  chmod ugo+rwx ds-5_installer
+  ls ds-5_installer
+
+  ##solution4##
+  export QUARTUS_ROOTDIR=/home/imeynyk/intelFPGA/17.0/quartus
+  export ALTERAOCLSDKROOT=/home/imeynyk/intelFPGA/17.0/hld
+  export PATH=$PATH:"$QUARTUS_ROOTDIR"/bin; "$ALTERAOCLSDKROOT"/linux64/bin; "$ALTERAOCLSDKROOT"/bin; /home/imeynyk/intelFPGA/17.0/embedded/ds-5_installer
+  export LD_LIBRARY_PATH=$ALTERAOCLSDKROOT/linux64/lib
+  export AOCL_BOARD_PACKAGE_ROOT=$ALTERAOCLSDKROOT/board/terasic/de1_soc/hardware/de1soc_sharedonly
+  export QUARTUS_64BIT=1
+  export LM_LICENSE_FILE=/home/imeynyk/intelFPGA/17.0/hld/license.dat
+
+  ## aocl: command not found##
+  ##solution5##
+  “%ALTERAOCLSDKROOT%\bin” path is added to the PATH environment variable correctly.
+  export QUARTUS_ROOTDIR=/home/imeynyk/intelFPGA/17.0/quartus
+  export ALTERAOCLSDKROOT=/home/imeynyk/intelFPGA/17.0/hld
+  export PATH=$PATH:$QUARTUS_ROOTDIR/bin:"$ALTERAOCLSDKROOT"/linux64/bin:"$ALTERAOCLSDKROOT"/bin:/home/imeynyk/intelFPGA/17.0/embedded/ds-5_installer
+  export LD_LIBRARY_PATH=$ALTERAOCLSDKROOT/linux64/lib
+  export AOCL_BOARD_PACKAGE_ROOT=$ALTERAOCLSDKROOT/board/terasic/de1_soc
+  export QUARTUS_64BIT=1
+  export LM_LICENSE_FILE=/home/imeynyk/intelFPGA/17.0/hld/license.dat 
+
+#verify utility#
+aocl version
+
+#verify target board#
+aoc --list-boards
+
+#chk environment variables#
+echo $AOCL_BOARD_PACKAGE_ROOT
+
+#compile opencl kernel#
+cd /home/imeynyk/intelFPGA/17.0/hld/board/terasic/de1_soc/tests/boardtest
+aoc device/boardtest.cl --sw-dimm-partition -o bin/boardtest.aocx
+
+#compile host program#
+cd /home/imeynyk/intelFPGA/17.0/hld/board/terasic/de1_soc/tests/boardtest
+make
+
+###configuring linux user environment###
+https://www.intel.cn/content/dam/altera-www/global/zh_CN/pdfs/literature/manual/quartus_install.pdf
+export PATH=${PATH}:/root/altera/17.0/quartus/bin
