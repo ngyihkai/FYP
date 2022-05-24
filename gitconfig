@@ -1,0 +1,8 @@
+git config --global user.name "ngyihkai"
+git config --global user.email "ngyihkai12@gmail.com"
+mkdir FYP
+cd FYP
+git init
+git remote add origin https://github.com/ngyihkai/FYP.git
+git push origin master
+
