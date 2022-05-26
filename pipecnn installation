@@ -1,4 +1,5 @@
 ###     PipeCNN         ###
+#method to do project:http://www.ithinktech.cn/index.php?c=content&a=show&id=411#
 #http://installing-caffe-the-right-way.wikidot.com/start
 #https://github.com/adeelz92/Install-Caffe-on-Ubuntu-16.04-Python-3/blob/master/README.md
 git clone https://github.com/doonny/PipeCNN.git
@@ -122,14 +123,6 @@ sudo apt-get install python-skimage
 sudo apt-get install python3-tk
 pip3 install scikit-image
 
-cd python
-python3
-import caffe
-
-#generate necessary RTL libraries
-./project_intel/RTL folder, run the makefile (simply type make).
-cd PipeCNN/project_intel/device/RTL
-make
 
 ##      activate matlab         ##
 make all matcaffe
@@ -140,12 +133,6 @@ cd Downloads/caffee
 sudo /usr/local/MATLAB/R2018a/bin/matlab
 addpath ./matlab
 savepath ./matlab
-
-
-sudo gedit ~/.bashrc
-export MATLABPATH=home/imeynyk/Downloads/caffee
-home/imeynyk/Downloads/caffee ./matlab
-
 
 
 ###new caffe###
@@ -215,7 +202,7 @@ BLAS := atlas
 # This is required only if you will compile the matlab interface.
 # MATLAB directory should contain the mex binary in /bin.
 MATLAB_DIR := /usr/local/MATLAB/R2018a
-#MATLAB_DIR := /usr/local/MATLAB/R2018a/bin/matlab
+MATLAB_DIR := /usr/local/MATLAB/R2018a/bin
 
 # NOTE: this is required only if you will compile the python interface.
 # We need to be able to find Python.h and numpy/arrayobject.h.
@@ -274,23 +261,16 @@ TEST_GPUID := 0
 Q ?= @
 
 
-To open it with a specific instance of MATLAB, 
- a) Open MATLAB,
- b) Browse to this file using the Current Folder Browser, and
- c) Double-click on this file
-
-
 cd PipeCNN/project_intel/device/RTL
 make
 
 ###     Matlab          ### 
 Matcaffe interfaces have their own natural needs.
 • For MATLAB Caffe: MATLAB with the mex compiler.
-
-MATLAB
-Install MATLAB, and make sure that its mex is in your $PATH.
-Caffe’s MATLAB interface works with versions 2015a, 2014a/b, 2013a/b, and 2012b.
+Install MATLAB, and make sure that its mex is in your $PATH. -->/usr/local/MATLAB/R2018a/bin
 To compile the Python and MATLAB wrappers do make pycaffe and make matcaffe respectively. Be sure to set your MATLAB and Python paths in Makefile.config first!
+sudo gedit Makefile.config
+
 
 ##      Choose a C++ Compiler   ##
 #https://www.mathworks.com/help/matlab/matlab_external/change-default-gcc-compiler-on-linux-system.html
@@ -308,3 +288,8 @@ weights = '/home/imeynyk/Downloads/caffee/models/bvlc_reference_caffenet.caffemo
 go to https://modelzoo.co/model/bvlc-reference-caffenet
 click get model
 rename it to 'bvlc_reference_caffenet.caffemodel'
+
+#generate necessary RTL libraries
+./project_intel/RTL folder, run the makefile (simply type make).
+cd PipeCNN/project_intel/device/RTL
+make

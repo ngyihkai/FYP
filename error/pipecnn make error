@@ -10,5 +10,96 @@ make: *** [run.exe] Error 1
 
 libalteracl.so
 libintel_soc32_mmd.so
--lintel_soc32_mmd
+lintel_soc32_mmd
 libelf.so
+
+### .so file is what	###
+An .so file is a compiled library file. It stands for "Shared Object" and is analogous to a Windows DLL.
+
+method:
+1. make clean and rerun (x)
+2. install newer version of altera quartus, sdk...
+3. chk g++ 64/32 bit (https://blog.csdn.net/xxm524/article/details/45840679?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-45840679-blog-105554534.pc_relevant_antiscanv3&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-45840679-blog-105554534.pc_relevant_antiscanv3&utm_relevant_index=5)
+4. chk and change cross-compiler and cxx:
+	arm-linux-gnueabihf-
+	arm-linux-gnueabihf-gcc
+	g++			(x)
+5. 	cd /intelFPGA/18.1/hld/host/arm32/lib
+	objdump -p libalteracl.so
+	cd intelFPGA/18.1/hld/board/terasic/de1_soc/arm32/lib
+	objdump -p libintel_soc32_mmd.so
+	objdump -p lintel_soc32_mmd
+	objdump -p libelf.so
+6.  uname -m --> x86_64
+	gcc -v --> x86_64-linux-gnu
+	x86-32bit
+	arm32-32bit
+7. 	change x86 --> x86_64, x86_32 but useless
+ 	gcc -m32 libalteracl.so -o libalteracl
+ 	gcc -m32 lintel_soc32_mmd -o libalteracl lintel_soc32_mmd
+	gcc -m32 libelf.so -o  libelf.so
+8. 	https://stackoverflow.com/questions/22099328/using-32bit-so-file-in-a-64bit-environment
+	https://stackoverflow.com/questions/1272357/how-to-compile-a-32-bit-binary-on-a-64-bit-linux-machine-with-gcc-cmake
+	CXX :=g++ --> -m32
+
+
+make clean
+make all
+make test
+make runtest
+make pycaffe
+make all matcaffe
+make mattest
+sudo gedit ~/.bashrc
+export PYTHONPATH=/home/user/imeynyk/Downloads/caffee/python:$PYTHONPATH
+export MATLABPATH=/home/user/imeynyk/Downloads/caffee/matlab:$MATLABPATH
+
+
+##      activate matlab         ##
+After successful building and testing, add this package to Matlab search PATH by 
+starting matlab from caffe root folder and running the following commands in Matlab command window.
+cd Downloads/caffee
+sudo /usr/local/MATLAB/R2018a/bin/matlab
+addpath ./matlab
+savepath ./matlab
+
+##	make all matcaffe error 	##
+The version currently supported with MEX is '6.3.x'. For a list of currently supported compilers see: https://www.mathworks.com/support/compilers/current_release.
+
+
+http://wei48221.blogspot.com/2017/08/linux-how-to-solve-problem-of-usrbinld.html
+
+##	check source code bit and ubuntu bit 	##
+#https://blog.csdn.net/KgdYsg/article/details/78769302#
+#https://blog.csdn.net/xiuzhentianting/article/details/48339787?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1-48339787-blog-75535955.pc_relevant_default&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1-48339787-blog-75535955.pc_relevant_default&utm_relevant_index=1
+host architecture=x86_64 --> 64-bit version of the x86 instruction set (uname -m)
+ARM and x86 are for 32-bit processors
+arm64 and x86_64 are for 64-bit
+file libalteracl.so --> 32bit
+file libintel_soc32_mmd.so --> 32bit
+file libelf.so --> 32bit
+
+
+
+##		cross-compiler (gcc and g++)		##   --> (x)
+1. 	sudo apt-get install gcc-arm-linux-gnueabihf
+	arm-linux-gnueabihf-gcc
+2. 	sudo apt-get update
+	sudo apt-get install g++-arm-linux-gnueabihf
+	arm-linux-gnueabihf-g++
+
+##		update gcc and g++ 		##
+sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get install gcc-6 g++-6
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 20 --slave /usr/bin/g++ g++ /usr/bin/g++-6
+gcc --version 	--> 6.5.0 
+g++ --version	--> 6.5.0
+
+sudo dpkg --add-architecture i386
+sudo apt install libc6:i386
+
+#	rtl_lib.h not found		#
+copy rtl_lib.h from RTL folder to current directory
+#	__attribute__((max_work_group_size(1,1,LRN_MAX_LOCAL_SIZE))) // (x,y,z) #
+conv_pipe.log
