@@ -293,3 +293,10 @@ rename it to 'bvlc_reference_caffenet.caffemodel'
 ./project_intel/RTL folder, run the makefile (simply type make).
 cd PipeCNN/project_intel/device/RTL
 make
+
+#       successfully    #
+aoc: Emulator Compilation completed successfully.
+Emulator flow is successful.
+To execute emulated kernel, invoke host with 
+        env CL_CONTEXT_EMULATOR_DEVICE_INTELFPGA=1 <host_program>
+ For multi device emulations replace the 1 with the number of devices you wish to emulate

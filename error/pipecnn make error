@@ -90,6 +90,7 @@ file libelf.so --> 32bit
 
 ##		update gcc and g++ 		##
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+
 sudo apt-get update
 sudo apt-get install gcc-6 g++-6
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 20 --slave /usr/bin/g++ g++ /usr/bin/g++-6
@@ -103,3 +104,26 @@ sudo apt install libc6:i386
 copy rtl_lib.h from RTL folder to current directory
 #	__attribute__((max_work_group_size(1,1,LRN_MAX_LOCAL_SIZE))) // (x,y,z) #
 conv_pipe.log
+
+#	/home/imeynyk/PipeCNN/project_intel/device/conv_pipe.cl:1123:16: error: attribute takes one argument	#
+https://github.com/doonny/PipeCNN/issues/133
+__attribute__((max_work_group_size(1,1,LRN_MAX_LOCAL_SIZE))) // (x,y,z)
+change to
+__attribute__((max_work_group_size(LRN_MAX_LOCAL_SIZE))) // (x,y,z)
+
+#	/home/imeynyk/PipeCNN/project_intel/device/conv_pipe.cl:96: Compiler Error: undefined reference to 'mult_add_fix8bx4' 	#
+Error: Optimizer FAILED.
+copy and paste the new makefile
+
+
+//#include "mult_add_fix8bx4.bsf"
+//#include "mult_add_fix8bx4.v"
+//#include "mult_add_fix8bx4_0002.v"
+//#include ../device/RTL/mult_add_fix8bx4
+//#include home/imeynyk/PipeCNN/project_intel/device/RTL/mult_add_fix8bx4
+#pragma comment(mult_add_fix8bx4, "home/imeynyk/PipeCNN/project_intel/device/RTL/mult_add_fix8bx4")
+#pragma comment(mult_add_fix8bx4, "home/imeynyk/PipeCNN/project_intel/mult_add_fix8bx4")
+#pragma comment(mult_add_fix8bx4, "mult_add_fix8bx4")
+
+g++ -m32
+sudo apt install gcc-multilib
