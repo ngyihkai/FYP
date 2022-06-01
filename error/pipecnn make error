@@ -125,5 +125,29 @@ copy and paste the new makefile
 #pragma comment(mult_add_fix8bx4, "home/imeynyk/PipeCNN/project_intel/mult_add_fix8bx4")
 #pragma comment(mult_add_fix8bx4, "mult_add_fix8bx4")
 
-g++ -m32
+
+Makefile:132: recipe for target 'host/main.o' failed
+make: [host/main.o] Error 127 (ignored)
+Makefile:132: recipe for target '../common/ocl_util.o' failed
+make: [../common/ocl_util.o] Error 127 (ignored)
+Makefile:132: recipe for target '../common/timer.o' failed
+make: [../common/timer.o] Error 127 (ignored)
+
+
+g++ -m32, gcc -m32
 sudo apt install gcc-multilib
+sudo apt install g++-multilib
+sudo apt-get install gcc-6.5-multilib g++-6.5-multilib
+
+ #include <bits/c++config.h> error
+g++-6.5 --> make: g++-6.5: Command not found
+g++ -6.5 --> g++: error: unrecognized command line option ‘-6.5’
+sudo apt-get install gcc-4.8-multilib g++-4.8-multilib
+
+HOST_SRCS = ./host/main.cpp ../common/ocl_util.cpp ../common/timer.cpp
+HOST_SRCS = home/imeynyk/PipeCNN/project_intel/host/main.cpp home/imeynyk/PipeCNN/project_intel/common/ocl_util.cpp home/imeynyk/PipeCNN/project_intel/common/timer.cpp
+HOST_SRCS = imeynyk/PipeCNN/project_intel/host/main.cpp imeynyk/PipeCNN/project_intel/common/ocl_util.cpp imeynyk/PipeCNN/project_intel/common/timer.cpp
+HOST_SRCS = PipeCNN/project_intel/host/main.cpp PipeCNN/project_intel/common/ocl_util.cpp PipeCNN/project_intel/common/timer.cpp
+HOST_SRCS = host/main.cpp common/ocl_util.cpp common/timer.cpp
+HOST_SRCS = /host/main.cpp /common/ocl_util.cpp /common/timer.cpp
+
