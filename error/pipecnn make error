@@ -7,10 +7,8 @@ collect2: error: ld returned 1 exit status
 Makefile:168: recipe for target 'run.exe' failed
 make: *** [run.exe] Error 1
 
-
 libalteracl.so
 libintel_soc32_mmd.so
-lintel_soc32_mmd
 libelf.so
 
 ### .so file is what	###
@@ -75,9 +73,10 @@ http://wei48221.blogspot.com/2017/08/linux-how-to-solve-problem-of-usrbinld.html
 host architecture=x86_64 --> 64-bit version of the x86 instruction set (uname -m)
 ARM and x86 are for 32-bit processors
 arm64 and x86_64 are for 64-bit
-file libalteracl.so --> 32bit
-file libintel_soc32_mmd.so --> 32bit
-file libelf.so --> 32bit
+file libalteracl.so --> 32bit 	ELF 32-bit LSB shared object, ARM
+ldd libalteracl.so
+file libintel_soc32_mmd.so --> 32bit ELF 32-bit LSB shared object, ARM
+file libelf.so --> 32bit ELF 32-bit LSB shared object, ARM
 
 
 
@@ -133,12 +132,14 @@ make: [../common/ocl_util.o] Error 127 (ignored)
 Makefile:132: recipe for target '../common/timer.o' failed
 make: [../common/timer.o] Error 127 (ignored)
 
-
+#	 multiple g++ method	#
+https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64643
 g++ -m32, gcc -m32
 sudo apt install gcc-multilib
 sudo apt install g++-multilib
 sudo apt-get install gcc-6.5-multilib g++-6.5-multilib
 
+#	g++ with wrong method	#
  #include <bits/c++config.h> error
 g++-6.5 --> make: g++-6.5: Command not found
 g++ -6.5 --> g++: error: unrecognized command line option ‘-6.5’
@@ -151,3 +152,49 @@ HOST_SRCS = PipeCNN/project_intel/host/main.cpp PipeCNN/project_intel/common/ocl
 HOST_SRCS = host/main.cpp common/ocl_util.cpp common/timer.cpp
 HOST_SRCS = /host/main.cpp /common/ocl_util.cpp /common/timer.cpp
 
+sudo apt-get update
+sudo apt-get install g++-arm-linux-gnueabihf
+
+#	check exist of g++ and gcc arm #
+dpkg -L g++-arm-linux-gnueabi
+dpkg -L gcc-arm-linux-gnueabihf
+dpkg -L g++-arm-linux-gnueabihf --> /usr/bin/arm-linux-gnueabihf-g++
+
+#	location of error code 	#
+libalteracl.so -->  /intelFPGA/18.1/hld/host/linux64/lib
+libintel_soc32_mmd.so --> 32bit file
+libelf.so -->  /intelFPGA/18.1/hld/host/linux64/lib
+
+# 	check pc determine and set the build and host architecture for package building #
+https://www.unixmen.com/enable-32-bit-support-64-bit-ubuntu-13-10-greater/
+dpkg --print-architecture --> amd64
+dpkg --print-foreign-architectures --> i386 (installed 32-bit support for your 64-bit system.)
+
+
+#	bits/c++config.h: No such file or directory	#
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 1
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 2
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 3
+
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 1
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 2
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 3
+
+
+sudo update-alternatives --config gcc
+sudo update-alternatives --config g++
+gcc --version
+g++ --version
+
+#	/usr/include/linux/errno.h:1:23: fatal error: asm/errno.h: No such file or directory	#
+https://stackoverflow.com/questions/14795608/asm-errno-h-no-such-file-or-directory
+sudo ln -s /usr/include/x86_64-linux-gnu/asm /usr/include/asm
+
+#	bash: ./boardtest_host: cannot execute binary file: Exec format error 	#
+sudo apt install binfmt-support qemu qemu-user-static
+sudo ln -s /usr/arm-linux-gnueabihf/lib/ld-linux-armhf.so.3 /usr/lib/ld-linux-armhf.so.3 
+arm-linux-gnueabihf-g++ -static -o name program.s
+qemu-arm name
+
+# 	host/layer_config.h:1152:1: error: narrowing conversion of ‘-4’ from ‘int’ to ‘char’ inside { } [-Wnarrowing] 	#
+replace -4 with 0 for line 1152 in layer_config.h

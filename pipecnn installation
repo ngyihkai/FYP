@@ -300,3 +300,7 @@ Emulator flow is successful.
 To execute emulated kernel, invoke host with 
         env CL_CONTEXT_EMULATOR_DEVICE_INTELFPGA=1 <host_program>
  For multi device emulations replace the 1 with the number of devices you wish to emulate
+
+
+chmod u+x setup_aoc_emu.sh
+./setup_aoc_emu.sh
